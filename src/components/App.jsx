@@ -1,10 +1,35 @@
-import React from "react";
-import UserForm from "./Form/Form";
+import React, { Component } from "react";
+import { UserForm } from "./ContactsForm/Form";
+import { ContactList } from "./Contacts/ContactsList";
 
-export const App = () => {
-  return (
-    <div>
-     <UserForm/>
-    </div>
-  );
-};
+
+
+
+export class App extends Component {
+  state = {
+    contacts: [],
+    name: '',
+    
+  };
+ 
+  addContact = contact => {
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, contact]
+    }))
+    console.dir(contact)
+  }
+
+  render() {
+    return (
+      <>
+        <UserForm onSubmit={this.addContact} />
+        <ContactList contacts={this.state.contacts}/>
+
+      </>
+    )
+  }
+}
+
+
+
+   
