@@ -39,7 +39,7 @@ export class UserForm extends Component {
     render() {
         return (
             <FormStyle onSubmit={this.onSubmit}>
-                <Label htmlFor="">Name
+                <Label htmlFor="name">Name
                 <Input
                      value={this.state.name}
                     onChange={this.onChange}
