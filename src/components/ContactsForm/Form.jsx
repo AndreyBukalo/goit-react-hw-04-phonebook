@@ -51,7 +51,7 @@ export class UserForm extends Component {
                    required
                 /></Label>
                 <br/>
-                <Label htmlFor="">Number
+                <Label htmlFor="number">Number
                     <Input
                          value={this.state.number}
                     onChange={this.onChange}
