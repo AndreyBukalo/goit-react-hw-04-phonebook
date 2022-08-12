@@ -1,32 +1,38 @@
+import { List,ListItem,ListItemText , Btn} from "./ContactList.styled";
 
-
-export function ContactListItem({ contact }) {
+export const ContactListItem = ({ contact, onDelete }) => {
   return (
-    <li>
-      <p>
-        {contact.name}
-      </p>
-      <button
+    <ListItem id={contact.id}>
+      <ListItemText>
+              <b>{contact.name}</b> : {contact.number}
+               </ListItemText>
+     <Btn
+     type="button"
+        onClick={() => {
+          onDelete(contact.id);
+        }}
       >
         Delete
-      </button>
-    </li>
+      </Btn>
+    </ListItem>
   );
 }
 
 
-export function ContactList({ contacts }) {
-
+export const ContactList = ({ contacts,filter,onDelete}) => {
+ if (filter !== '') {
+    return;
+  }
 
   return (
-    <ul >
+    <List >
       {contacts.map(contact => (
         <ContactListItem
           key={contact.id}
           contact={contact}
-        
+          onDelete={onDelete}
         />
       ))}
-    </ul>
+    </List>
   );
 }
