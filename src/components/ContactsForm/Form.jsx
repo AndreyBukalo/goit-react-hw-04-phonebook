@@ -12,6 +12,7 @@ export class UserForm extends Component {
     }
     userId = nanoid();
     
+
     onChange = event => {
         const { name,value } = event.currentTarget;
         this.setState({ [name]: value });
@@ -39,7 +40,7 @@ export class UserForm extends Component {
     render() {
         return (
             <FormStyle onSubmit={this.onSubmit}>
-                <Label htmlFor="">Name
+                <Label htmlFor="name">Name
                 <Input
                      value={this.state.name}
                     onChange={this.onChange}

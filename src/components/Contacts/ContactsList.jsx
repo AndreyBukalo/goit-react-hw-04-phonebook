@@ -1,4 +1,4 @@
-import { List,ListItem,ListItemText , Btn} from "./ContactList.styled";
+import { List, ListItem, ListItemText, Btn } from "./ContactList.styled";
 
 export const ContactListItem = ({ contact, onDelete }) => {
   return (
