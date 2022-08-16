@@ -1,18 +1,10 @@
-import {List,Label, Input, } from "./Filter.styled"
-import { Box } from "components/Box";
-
-
-
-
-
-
+import { List, Label, Input } from './Filter.styled';
+import { Box } from 'components/Box';
 
 export const Filter = ({ onChange, value, onFilter }) => {
   return (
-    <Box
-      display="flex"
-      pl="30px">
-      <Label >
+    <Box display="flex" pl="30px">
+      <Label>
         Find contacts by name
         <Input
           type="text"
@@ -24,8 +16,7 @@ export const Filter = ({ onChange, value, onFilter }) => {
           required
         />
       </Label>
-      {value && <List>{onFilter()}
-      </List>}
+      {value && <List>{onFilter()}</List>}
     </Box>
   );
-}
+};
