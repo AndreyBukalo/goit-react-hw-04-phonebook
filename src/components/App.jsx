@@ -48,10 +48,6 @@ export const App = () => {
     setFilter(event.currentTarget.value);
   };
 
-  const filtredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
   const onFilter = () => {
     if (filter === '') {
       return;
@@ -85,11 +81,7 @@ export const App = () => {
       <UserForm onSubmit={addContact} />
       <h2>Contacts</h2>
       <Filter onChange={onChange} value={filter} onFilter={onFilter} />
-      <ContactList
-        contacts={filtredContacts}
-        filter={filter}
-        onDelete={onDelete}
-      />
+      <ContactList contacts={contacts} filter={filter} onDelete={onDelete} />
     </Box>
   );
 };
