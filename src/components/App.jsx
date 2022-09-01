@@ -1,67 +1,64 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { UserForm } from './ContactsForm/Form';
 import { ContactList } from './Contacts/ContactsList';
 import { Filter } from './Filter/Filter';
 import { ListItemApp, ListItemText, Btn } from './Contacts/ContactList.styled';
 import { Box } from './Box';
+import { nanoid } from 'nanoid';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+const initialContacts = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
 
-  componentDidMount() {
+export const App = () => {
+  const [contacts, setContacts] = useState(() => {
     const saveData = localStorage.getItem('lsData');
     const parsedData = JSON.parse(saveData);
-    if (parsedData) {
-      this.setState({ contacts: parsedData });
-    }
-  }
+    return saveData ? parsedData : [...initialContacts];
+  });
+  const [filter, setFilter] = useState('');
 
-  componentDidUpdate(_, prevState) {
-    if (this.state !== prevState) {
-      localStorage.setItem('lsData', JSON.stringify(this.state.contacts));
-    }
-  }
-  addContact = contact => {
+  useEffect(() => {
+    localStorage.setItem('lsData', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const addContact = contact => {
+    const id = nanoid();
     if (
-      this.state.contacts.find(
+      contacts.find(
         cont => cont.name.toLowerCase() === contact.name.toLowerCase()
       )
     ) {
       return alert(`${contact.name} is already in contacts`);
     }
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, contact],
-    }));
+    setContacts(state => [
+      ...state,
+      { name: contact.name, number: contact.number, id: id },
+    ]);
   };
 
-  onDelete = id => {
-    const newArray = this.state.contacts.filter(c => c.id !== id);
-    this.setState(prevState => ({
-      contacts: [...newArray],
-    }));
+  const onDelete = id => {
+    setContacts(contacts.filter(contact => contact.id !== id));
   };
 
-  onChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
+  const onChange = event => {
+    setFilter(event.currentTarget.value);
   };
 
-  onFilter = () => {
-    if (this.state.filter === '') {
+  const filtredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const onFilter = () => {
+    if (filter === '') {
       return;
     }
-    return this.state.contacts.map(contact => {
-      if (
-        contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-      ) {
+
+    return contacts.map(contact => {
+      if (contact.name.toLowerCase().includes(filter.toLowerCase())) {
         return (
           <ListItemApp key={contact.id}>
             <ListItemText>
@@ -70,7 +67,7 @@ export class App extends Component {
             <Btn
               type="button"
               onClick={() => {
-                this.onDelete(contact.id);
+                onDelete(contact.id);
               }}
             >
               Delete
@@ -82,23 +79,17 @@ export class App extends Component {
     });
   };
 
-  render() {
-    return (
-      <Box width={380} listStyle="none" ml="45px" mt="20px" p="0">
-        <h1>Phonebook</h1>
-        <UserForm onSubmit={this.addContact} />
-        <h2>Contacts</h2>
-        <Filter
-          onChange={this.onChange}
-          value={this.state.filter}
-          onFilter={this.onFilter}
-        />
-        <ContactList
-          contacts={this.state.contacts}
-          filter={this.state.filter}
-          onDelete={this.onDelete}
-        />
-      </Box>
-    );
-  }
-}
+  return (
+    <Box width={380} listStyle="none" ml="45px" mt="20px" p="0">
+      <h1>Phonebook</h1>
+      <UserForm onSubmit={addContact} />
+      <h2>Contacts</h2>
+      <Filter onChange={onChange} value={filter} onFilter={onFilter} />
+      <ContactList
+        contacts={filtredContacts}
+        filter={filter}
+        onDelete={onDelete}
+      />
+    </Box>
+  );
+};
