@@ -28,11 +28,3 @@ export const Btn = styled.button`
     background-color: gainsboro;
   }
 `;
-
-export const ListItemApp = styled.li`
-  width: 288px;
-  display: flex;
-  justify-content: space-between;
-  margin: 0;
-  margin-bottom: 8px;
-`;

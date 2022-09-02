@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { UserForm } from './ContactsForm/Form';
 import { ContactList } from './Contacts/ContactsList';
 import { Filter } from './Filter/Filter';
-import { ListItemApp, ListItemText, Btn } from './Contacts/ContactList.styled';
 import { Box } from './Box';
-import { nanoid } from 'nanoid';
 
 const initialContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -26,7 +24,6 @@ export const App = () => {
   }, [contacts]);
 
   const addContact = contact => {
-    const id = nanoid();
     if (
       contacts.find(
         cont => cont.name.toLowerCase() === contact.name.toLowerCase()
@@ -34,10 +31,7 @@ export const App = () => {
     ) {
       return alert(`${contact.name} is already in contacts`);
     }
-    setContacts(state => [
-      ...state,
-      { name: contact.name, number: contact.number, id: id },
-    ]);
+    setContacts(state => [...state, contact]);
   };
 
   const onDelete = id => {
@@ -48,40 +42,20 @@ export const App = () => {
     setFilter(event.currentTarget.value);
   };
 
-  const onFilter = () => {
-    if (filter === '') {
-      return;
-    }
-
-    return contacts.map(contact => {
-      if (contact.name.toLowerCase().includes(filter.toLowerCase())) {
-        return (
-          <ListItemApp key={contact.id}>
-            <ListItemText>
-              <b>{contact.name}</b> : {contact.number}
-            </ListItemText>
-            <Btn
-              type="button"
-              onClick={() => {
-                onDelete(contact.id);
-              }}
-            >
-              Delete
-            </Btn>
-          </ListItemApp>
-        );
-      }
-      return null;
-    });
+  const contactList = () => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
   };
+ 
 
   return (
     <Box width={380} listStyle="none" ml="45px" mt="20px" p="0">
       <h1>Phonebook</h1>
       <UserForm onSubmit={addContact} />
       <h2>Contacts</h2>
-      <Filter onChange={onChange} value={filter} onFilter={onFilter} />
-      <ContactList contacts={contacts} filter={filter} onDelete={onDelete} />
+      <Filter onChange={onChange} />
+      <ContactList contacts={contactList()} onDelete={onDelete} />
     </Box>
   );
 };

@@ -9,12 +9,3 @@ export const Input = styled.input`
   margin-bottom: 12px;
 `;
 
-export const List = styled.ul`
-  list-style: none;
-  position: absolute;
-  top: 380px;
-  left: 35px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;

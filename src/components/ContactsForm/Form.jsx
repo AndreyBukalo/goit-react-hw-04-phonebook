@@ -1,11 +1,13 @@
 import { FormStyle, Label, Input, Btn } from './Form.styled';
 import { useState } from 'react';
+import { nanoid } from 'nanoid';
 
 export const UserForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const onChange = ({ target: { name, value } }) => {
+  const onChange = event => {
+    const { name, value } = event.target;
     switch (name) {
       case 'name':
         setName(value);
@@ -20,11 +22,8 @@ export const UserForm = ({ onSubmit }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    if (!name || !number) {
-      alert('Please, fill all fields');
-      return;
-    }
-    onSubmit({ name, number });
+    const id = nanoid();
+    onSubmit({ id, name, number });
     setName('');
     setNumber('');
   };

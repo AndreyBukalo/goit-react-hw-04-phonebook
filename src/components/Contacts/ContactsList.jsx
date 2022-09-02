@@ -18,11 +18,7 @@ export const ContactListItem = ({ contact, onDelete }) => {
   );
 };
 
-export const ContactList = ({ contacts, filter, onDelete }) => {
-  if (filter !== '') {
-    return;
-  }
-
+export const ContactList = ({ contacts, onDelete }) => {
   return (
     <List>
       {contacts.map(contact => (
